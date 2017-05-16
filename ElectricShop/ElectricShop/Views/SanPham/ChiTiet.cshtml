@@ -48,9 +48,14 @@
         <hr class="soft" />
         <form class="form-horizontal qtyFrm">
             <div class="control-group">
-                <label class="control-label"><span>@Model.sanpham.Gia vnđ</span></label>
+                <span style="color:red; font-size:20px;">Giá bán : @Html.DisplayFor(modelItem => Model.sanpham.GiaGiam) vnđ</span>
+                @{
+                    if ((Model.sanpham.GiaGiam != Model.sanpham.Gia))
+                    {
+                        @:<br /><br/><span style="font-size:15px; font-weight:bold;">Giá niêm yết :<span style="text-decoration:line-through"> @Html.DisplayFor(modelItem => Model.sanpham.Gia) vnđ</span>&nbsp;<span style="background-color:red;color:white;">-@(100 - Model.sanpham.GiaGiam * 100 / Model.sanpham.Gia)%</span></span>
+                    }
+                }
                 <div class="controls">
-                    Số lượng : <input type="number" class="span1" placeholder="1" />
                     <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
                 </div>
             </div>

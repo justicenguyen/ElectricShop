@@ -37,7 +37,7 @@
                         @{
                             if (!(spht.Gia == spht.GiaGiam))
                             {
-                                <h5> <span style="text-decoration:line-through" class="giagoc"> @Html.DisplayFor(modelItem => spht.Gia) vnđ  </span> &nbsp;<span style="background-color:red;color:white;">-@(100 - spht.GiaGiam * 100 / spht.Gia)%</span></h5>
+                                <h5> <span style="text-decoration:line-through;" class="giagoc"> @Html.DisplayFor(modelItem => spht.Gia) vnđ  </span> &nbsp;<span style="background-color:red;color:white;">-@(100 - spht.GiaGiam * 100 / spht.Gia)%</span></h5>
                             }
                         }
                     </p>
