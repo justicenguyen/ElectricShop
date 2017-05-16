@@ -17,7 +17,9 @@ namespace ElectricShop.Models
         [Required(ErrorMessage = "Bạn chưa nhập tên sản phẩm có không dấu !")]
         public string TenSPKhongDau { get; set; }
         [Required(ErrorMessage = "Bạn chưa nhập giá sản phẩm !")]
-        public int Gia { get; set; }
+        [DisplayFormat(DataFormatString = "{0:0,0}")]
+        public int? Gia { get; set; }
+        [DisplayFormat(DataFormatString = "{0:0,0}")]
         public int GiaGiam { get; set; }
         [Required(ErrorMessage = "Bạn chưa chọn ảnh đại diện cho sản phẩm !")]
         public string HinhAnh { get; set;}

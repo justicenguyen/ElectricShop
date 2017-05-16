@@ -8,9 +8,10 @@ using ElectricShop.Models;
 namespace ElectricShop.Migrations
 {
     [DbContext(typeof(ElectricShopContext))]
-    partial class ElectricShopContextModelSnapshot : ModelSnapshot
+    [Migration("20170515175652_update_BLTb")]
+    partial class update_BLTb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -21,7 +22,8 @@ namespace ElectricShop.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
                     b.Property<string>("HoTen")
                         .IsRequired();
@@ -31,7 +33,8 @@ namespace ElectricShop.Migrations
                     b.Property<string>("NoiDung")
                         .IsRequired();
 
-                    b.Property<string>("SoDienThoai");
+                    b.Property<string>("SoDienThoai")
+                        .IsRequired();
 
                     b.Property<DateTime>("ThoiGian");
 
@@ -113,8 +116,7 @@ namespace ElectricShop.Migrations
 
                     b.Property<string>("DoPhanGiai");
 
-                    b.Property<int?>("Gia")
-                        .IsRequired();
+                    b.Property<int>("Gia");
 
                     b.Property<int>("GiaGiam");
 

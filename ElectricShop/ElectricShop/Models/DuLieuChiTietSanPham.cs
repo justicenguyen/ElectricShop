@@ -11,6 +11,7 @@ namespace ElectricShop.Models
         public SanPham sanpham;
         public List<SanPham> dssanphamlienquan;
         public string HangSanXuat;
+        public List<BinhLuan> dsbinhluan;
         [Required(ErrorMessage = "Vui lòng nhập Họ và Tên")]
         public string HoTen { get; set; }
         [Required(ErrorMessage = "Vuu lòng nhập Email")]

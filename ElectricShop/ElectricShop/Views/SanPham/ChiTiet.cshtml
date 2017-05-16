@@ -231,49 +231,57 @@
 
 
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+<script >
+    $(document).ready(function () {
+        var date = new Date().toLocaleString();
+        $("#ThoiGian").val(date);
+    });
+</script>
 <h3>Bình luận sản phẩm</h3>
-<div class="row">
+<div class="row" >
     <div class="span7">
-        @*<form asp-controller="SanPham" asp-action="Tao">
+        <form class="form">
             <div class="form-group">
                 <div class="row">
                     <div class="span2">
-                        Họ và tên
+                        <b>Họ và tên (*)</b>
                     </div>
                     <div class="span5">
-                        <input type="text" asp-for="HoTen" class="form-control" style="width:100%;" id="usr"><br />
-                        <span asp-validation-for="HoTen" class="text-danger"></span>
+                        <input type="text" asp-for="HoTen" class="form-control" style="width:100%;" id="hoten" placeholder="Nhập họ và tên (bắt buộc)"><br />
+                        <span asp-validation-for="HoTen" class="text-danger"  style="color:red;" id="loihoten" ></span>
                     </div>
 
                 </div>
-                <input type="hidden" name="id" value="SMART TIVI SAMSUNG 40 INCH UA40K6300AKXXV" />
+                <input type="hidden" name="MaSanPham" value="@Model.sanpham.ID" />
+                <input type="hidden" id="ThoiGian" name="ThoiGian" />
                 <div class="row">
                     <div class="span2">
-                        Email
+                        <b>Email</b>
                     </div>
                     <div class="span5">
-                        <input type="text" asp-for="Email" class="form-control" style="width:100%;" id="usr"><br />
+                        <input type="email" asp-for="Email" class="form-control" style="width:100%;" id="email" placeholder="Nhập Email"><br />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                 </div>
                 <div class="row">
                     <div class="span2">
-                        Số điện thoại
+                        <b>Số điện thoại</b>
                     </div>
                     <div class="span5">
-                        <input asp-for="SoDienThoai" type="text" class="form-control" style="width:100%;" id="usr"><br />
+                        <input asp-for="SoDienThoai" type="text" class="form-control" style="width:100%;" id="sodienthoai" placeholder="Nhập số điện thoại"><br />
                         <span asp-validation-for="SoDienThoai" class="text-danger"></span>
                     </div>
 
                 </div>
                 <div class="row">
                     <div class="span2">
-                        Bình luận
+                        <b>Bình luận (*)</b>
                     </div>
                     <div class="span5">
-                        <textarea asp-for="NoiDung" class="form-control" rows="5" style="width:100%;"></textarea>
-                        <span asp-validation-for="NoiDung" class="text-danger"></span>
+                        <textarea asp-for="NoiDung" class="form-control" rows="5" style="width:100%;" id="noidung" placeholder="Nhập nội dung bình luận (bắt buộc)"></textarea>
+                        <span asp-validation-for="NoiDung" class="text-danger" style="color:red;" id="loinoidung"></span>
                     </div>
 
                 </div>
@@ -281,54 +289,59 @@
                     <div class="span2"></div>
                     <div class="span5">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-primary" onclick="this.form.submit();">Gửi</button>
+                            <button type="button" id="gui" class="btn btn-primary" >Gửi</button>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </form>*@
-
-
-        <form asp-action="Tao">
-            <div class="form-horizontal">
-                <h4>BinhLuan</h4>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="HoTen" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="HoTen" class="form-control" />
-                        <span asp-validation-for="HoTen" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Email" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label asp-for="SoDienThoai" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="SoDienThoai" class="form-control" />
-                        <span asp-validation-for="SoDienThoai" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label asp-for="NoiDung" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="NoiDung" class="form-control" />
-                        <span asp-validation-for="NoiDung" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-default" />
                     </div>
                 </div>
             </div>
         </form>
 
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#gui').click(function () {
+                    var flag = 1;
+                    if (document.getElementById('hoten').value == "") {
+                        $('#loihoten').text('Bạn chưa nhập họ tên !');
+                        flag = 0;
+                    }
+
+                    if (document.getElementById('noidung').value == "") {
+                        $('#loinoidung').text('Bạn chưa nhập nội dung bình luận !');
+                        flag = 0;
+                    }
+
+                    if (flag == 1) {
+                        $.ajax({
+                            url: '/SanPham/BinhLuan',
+                            type: 'POST',
+                            data: $('.form').serialize(),
+                            success: function (c) {
+                                var s = document.getElementById('binhluan').innerHTML;
+                                s = c + s;
+                                $('#binhluan').html(s);
+                                $('#noidung').val('');
+                            }
+                        });
+                        $('#loinoidung').hide();
+                        $('#loihoten').hide();
+                    }
+                    
+                });
+            });
+        </script>
+
+
+
+
+
+        <div id="binhluan">
+            @foreach (var bl in Model.dsbinhluan)
+            {
+                <p><span style="font-size:17px;"><b>@bl.HoTen : </b></span>@bl.NoiDung</p>
+                <p><a href="#">Thích </a> &emsp; <a href="#"> Trả lời </a>&emsp;   @bl.ThoiGian</p><hr/>
+            }
+        </div>
     </div>
+    
 </div>

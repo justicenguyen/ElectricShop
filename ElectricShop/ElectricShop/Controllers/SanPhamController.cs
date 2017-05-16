@@ -49,22 +49,31 @@ namespace ElectricShop.Controllers
             var dssanphamlienquan = (from splq in _context.SanPham
                                      where splq.LoaiSanPham==sanpham.LoaiSanPham && splq.TenSPKhongDau!=id 
                                      select splq).Take(6);
+            var dsbinhluan = from bl in _context.BinhLuan
+                             where bl.MaSanPham == sanpham.ID
+                             orderby bl.ThoiGian descending
+                             select bl;
 
             var chitietsanpham = new DuLieuChiTietSanPham();
             chitietsanpham.dssanphamlienquan = await dssanphamlienquan.ToListAsync();
             chitietsanpham.sanpham = sanpham;
             chitietsanpham.HangSanXuat = HangSanXuat;
+            chitietsanpham.dsbinhluan = await dsbinhluan.ToListAsync();
             return View(chitietsanpham);
         }
-
-
-
+        //Ajax thêm bình luận
+        public async Task<ActionResult> BinhLuan(BinhLuan binhLuan)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(binhLuan);
+                await _context.SaveChangesAsync();
+                string s = "<p><span style='font-size:17px;'><b>" + binhLuan.HoTen+" : </b></span>"+binhLuan.NoiDung+ "</p> <p><a href='#'>Thích </a> &emsp; <a href='#'> Trả lời </a>&emsp;"+   binhLuan.ThoiGian+"</p><hr/>";
+                return Content(s, "text/plain");
+            }
+            return View("ChiTiet", binhLuan);
+        }
         
-
-
-
-
-
         //Danh sách sản phẩm theo loại
         public async Task<IActionResult> DanhSachSanPhamTheoLoai(string id,string hang,string gia)
         {
@@ -97,26 +106,26 @@ namespace ElectricShop.Controllers
             {
                 if(gia.Equals("duoi-5-trieu"))
                 {
-                    dssanpham = dssanpham.Where(g => g.Gia<5000000);
+                    dssanpham = dssanpham.Where(g => g.GiaGiam<5000000);
                     ViewData["gia"] = "duoi-5-trieu";
                 }
                 else
                 {
                     if (gia.Equals("tu-5-7-trieu"))
                     {
-                        dssanpham = dssanpham.Where(g => (g.Gia>=5000000&&g.Gia<7000000));
+                        dssanpham = dssanpham.Where(g => (g.GiaGiam >= 5000000&&g.GiaGiam < 7000000));
                         ViewData["gia"] = "tu-5-7-trieu";
                     }
                     else
                     {
                         if (gia.Equals("tu-7-10-trieu"))
                         {
-                            dssanpham = dssanpham.Where(g => (g.Gia >= 7000000 && g.Gia < 10000000));
+                            dssanpham = dssanpham.Where(g => (g.GiaGiam >= 7000000 && g.GiaGiam < 10000000));
                             ViewData["gia"] = "tu-7-10-trieu";
                         }
                         else
                         {
-                            dssanpham = dssanpham.Where(g => g.Gia>10000000);
+                            dssanpham = dssanpham.Where(g => g.GiaGiam > 10000000);
                             ViewData["gia"] = "tren-10-trieu";
                         }
                     }
