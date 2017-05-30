@@ -9,6 +9,7 @@ using ElectricShop.Models;
 
 namespace ElectricShop.Controllers
 {
+    
     public class LoaiSanPhamController : Controller
     {
         private readonly ElectricShopContext _context;
@@ -17,7 +18,7 @@ namespace ElectricShop.Controllers
         {
             _context = context;    
         }
-
+        
         // GET: LoaiSanPham
         public async Task<IActionResult> Index()
         {
@@ -48,9 +49,7 @@ namespace ElectricShop.Controllers
             return View();
         }
 
-        // POST: LoaiSanPham/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,TenLoaiSPCoDau,TenLoaiSPKhongDau")] LoaiSanPham loaiSanPham)
@@ -62,6 +61,7 @@ namespace ElectricShop.Controllers
                 return RedirectToAction("Index");
             }
             return View(loaiSanPham);
+          
         }
 
         // GET: LoaiSanPham/Edit/5
@@ -116,22 +116,22 @@ namespace ElectricShop.Controllers
         }
 
         // GET: LoaiSanPham/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var loaiSanPham = await _context.LoaiSanPham
-                .SingleOrDefaultAsync(m => m.ID == id);
-            if (loaiSanPham == null)
-            {
-                return NotFound();
-            }
-
-            return View(loaiSanPham);
+            var loaiSanPham = await _context.LoaiSanPham.SingleOrDefaultAsync(m => m.ID == id);
+            _context.LoaiSanPham.Remove(loaiSanPham);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> XoaLSP(int? id)
+        {
+            var loaiSanPham = await _context.LoaiSanPham.SingleOrDefaultAsync(m => m.ID == id);
+            _context.LoaiSanPham.Remove(loaiSanPham);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Create");
+        }
+
 
         // POST: LoaiSanPham/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -141,7 +141,7 @@ namespace ElectricShop.Controllers
             var loaiSanPham = await _context.LoaiSanPham.SingleOrDefaultAsync(m => m.ID == id);
             _context.LoaiSanPham.Remove(loaiSanPham);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Create");
         }
 
         private bool LoaiSanPhamExists(int id)

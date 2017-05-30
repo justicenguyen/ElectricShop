@@ -56,7 +56,7 @@
                     }
                 }
                 <div class="controls">
-                    <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
+                    <button  class="btn btn-large btn-primary pull-right" id="themgiohang"> Add to cart <i class=" icon-shopping-cart"></i></button>
                 </div>
             </div>
         </form>
@@ -350,3 +350,20 @@
     </div>
     
 </div>
+
+<script>
+            $(document).ready(function () {
+                $('#themgiohang').click(function () {
+                    $.ajax({
+                        url: '/GioHang/ThemGioHang',
+                        type: 'GET',
+                        data: { "idSP": @Model.sanpham.ID, "soLuong": 1 },
+                        success: function (c) {
+                            alert(c);
+                        }
+
+                    });
+                });
+            });
+
+</script>

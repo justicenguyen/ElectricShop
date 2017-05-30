@@ -40,6 +40,53 @@ namespace ElectricShop.Migrations
                     b.ToTable("BinhLuan");
                 });
 
+            modelBuilder.Entity("ElectricShop.Models.ChiDietDonHang", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DonHangID");
+
+                    b.Property<int?>("Gia");
+
+                    b.Property<int>("SanPhamID");
+
+                    b.Property<int?>("SoLuong");
+
+                    b.Property<int?>("TongTien");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ChiDietDonHang");
+                });
+
+            modelBuilder.Entity("ElectricShop.Models.DonHang", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("DaDuyet");
+
+                    b.Property<bool>("DaGiao");
+
+                    b.Property<string>("DiaChi")
+                        .IsRequired();
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("SoDienThoai")
+                        .IsRequired();
+
+                    b.Property<string>("TenKhachHang")
+                        .IsRequired();
+
+                    b.Property<int?>("TongTien");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("DonHang");
+                });
+
             modelBuilder.Entity("ElectricShop.Models.KhuyenMai", b =>
                 {
                     b.Property<int>("ID")
@@ -81,9 +128,11 @@ namespace ElectricShop.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("TenNSXCoDau");
+                    b.Property<string>("TenNSXCoDau")
+                        .IsRequired();
 
-                    b.Property<string>("TenNSXKhongDau");
+                    b.Property<string>("TenNSXKhongDau")
+                        .IsRequired();
 
                     b.HasKey("ID");
 
@@ -120,7 +169,7 @@ namespace ElectricShop.Migrations
 
                     b.Property<string>("HeDeHanh");
 
-                    b.Property<int>("HienThi");
+                    b.Property<bool>("HienThi");
 
                     b.Property<string>("HinhAnh")
                         .IsRequired();
@@ -147,7 +196,7 @@ namespace ElectricShop.Migrations
 
                     b.Property<int>("NhaSanXuat");
 
-                    b.Property<int>("SanPhamBanChay");
+                    b.Property<bool>("SanPhamBanChay");
 
                     b.Property<string>("SmartTV");
 

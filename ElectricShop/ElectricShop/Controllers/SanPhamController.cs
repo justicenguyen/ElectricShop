@@ -6,16 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElectricShop.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Net.Http.Headers;
+using System.IO;
 
 namespace ElectricShop.Controllers
 {
     public class SanPhamController : Controller
     {
         private readonly ElectricShopContext _context;
+        private IHostingEnvironment hostingEnv;
 
-        public SanPhamController(ElectricShopContext context)
+        public SanPhamController(ElectricShopContext context, IHostingEnvironment env)
         {
-            _context = context;    
+            _context = context;
+            this.hostingEnv = env;
         }
         public IActionResult a()
         {
@@ -160,6 +166,36 @@ namespace ElectricShop.Controllers
         {
             return View(await _context.SanPham.ToListAsync());
         }
+
+        //Ajax thay đổi trạng thái thay đổi sản phẩm bán chạy
+        public async Task<IActionResult> ThayDoiHienThi(int? idsp)
+        {
+            if (idsp == null)
+            {
+                return NotFound();
+            }
+
+            var sanPham = await _context.SanPham.SingleOrDefaultAsync(m => m.ID == idsp);
+            sanPham.HienThi = !sanPham.HienThi;
+            _context.Update(sanPham);
+            await _context.SaveChangesAsync();
+            return Content("Thay đổi thành công");
+        }
+
+        //Ajax thay đổi trạng thái thay đổi sản phẩm bán chạy
+        public async Task<IActionResult> ThayDoiSanPhamBanChay(int? idsp)
+        {
+            if (idsp == null)
+            {
+                return NotFound();
+            }
+
+            var sanPham = await _context.SanPham.SingleOrDefaultAsync(m => m.ID == idsp);
+            sanPham.SanPhamBanChay = !sanPham.SanPhamBanChay;
+            _context.Update(sanPham);
+            await _context.SaveChangesAsync();
+            return Content("Thay đổi thành công");
+        }
         public async Task<IActionResult> TrangChu()
         {
             return View(await _context.SanPham.ToListAsync());
@@ -186,6 +222,12 @@ namespace ElectricShop.Controllers
         // GET: SanPham/Create
         public IActionResult Create()
         {
+            var dsLoaiSanPham = from lsp in _context.LoaiSanPham
+                                select lsp;
+            var dsNhaSanXuat = from nsx in _context.NhaSanXuat
+                               select nsx;
+            ViewBag.DSLoaiSanPham =  dsLoaiSanPham.ToList();
+            ViewBag.DSNhaSanXuat = dsNhaSanXuat.ToList();
             return View();
         }
 
@@ -194,14 +236,39 @@ namespace ElectricShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,TenSPCoDau,TenSPKhongDau,LoaiSanPham,Gia,HinhAnh,MauSac,NhaSanXuat,XuatXu,BaoHanh,NgayTao,HienThi,SanPhamBanChay,SoLuong,KichThuocThung,KhoiLuongThung,KichThuocMH,DoPhanGiai,ManHinhCong,BoXuLy,SmartTV,TanSoQuet,CongSuatLoa,CongWiFi,CongInternet,CongHDMI,CongUSB,ChiaSeThongMinh,HeDeHanh,TrinhDuyetWeb,LoaiDanMay,LoaiDauDia")] SanPham sanPham)
+        public async Task<IActionResult> Create([Bind("ID,TenSPCoDau,TenSPKhongDau,LoaiSanPham," +
+            "Gia,GiaGiam,HinhAnh,MauSac,NhaSanXuat,XuatXu,BaoHanh,NgayTao,HienThi,SanPhamBanChay,SoLuong," +
+            "KichThuocThung,KhoiLuongThung,KichThuocMH,DoPhanGiai,MoTa,ManHinhCong,BoXuLy,SmartTV,TanSoQuet," +
+            "CongSuatLoa,CongWiFi,CongInternet,CongHDMI,CongUSB,ChiaSeThongMinh,HeDeHanh,TrinhDuyetWeb,LoaiDanMay,LoaiDauDia")] SanPham sanPham, IFormFile HinhAnh)
         {
             if (ModelState.IsValid)
             {
+                long size = 0;
+                string tenHinh = "";
+                var filename = ContentDispositionHeaderValue
+                                .Parse(HinhAnh.ContentDisposition)
+                                .FileName
+                                .Trim('"');
+                tenHinh = $@"images\sanpham\" + filename;
+                filename = hostingEnv.WebRootPath + $@"\images\sanpham\{filename}";
+                size += HinhAnh.Length;
+                using (FileStream fs = System.IO.File.Create(filename))
+                {
+                    HinhAnh.CopyTo(fs);
+                    fs.Flush();
+                }
+
+                sanPham.HinhAnh = tenHinh;
                 _context.Add(sanPham);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            var dsLoaiSanPham = from lsp in _context.LoaiSanPham
+                                select lsp;
+            var dsNhaSanXuat = from nsx in _context.NhaSanXuat
+                               select nsx;
+            ViewBag.DSLoaiSanPham = dsLoaiSanPham.ToList();
+            ViewBag.DSNhaSanXuat = dsNhaSanXuat.ToList();
             return View(sanPham);
         }
 
@@ -218,6 +285,12 @@ namespace ElectricShop.Controllers
             {
                 return NotFound();
             }
+            var dsLoaiSanPham = from lsp in _context.LoaiSanPham
+                                select lsp;
+            var dsNhaSanXuat = from nsx in _context.NhaSanXuat
+                               select nsx;
+            ViewBag.DSLoaiSanPham = dsLoaiSanPham.ToList();
+            ViewBag.DSNhaSanXuat = dsNhaSanXuat.ToList();
             return View(sanPham);
         }
 
@@ -226,15 +299,38 @@ namespace ElectricShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,TenSPCoDau,TenSPKhongDau,Gia,HinhAnh,MauSac,NhaSanXuat,XuatXu,BaoHanh,NgayTao,HienThi,SanPhamBanChay,SoLuong,KichThuocThung,KhoiLuongThung,KichThuocMH,DoPhanGiai,ManHinhCong,BoXuLy,SmartTV,TanSoQuet,CongSuatLoa,CongWiFi,CongInternet,CongHDMI,CongUSB,ChiaSeThongMinh,HeDeHanh,TrinhDuyetWeb,LoaiDanMay,LoaiDauDia")] SanPham sanPham)
+        public async Task<IActionResult> Edit(int id,[Bind("ID,TenSPCoDau,TenSPKhongDau,LoaiSanPham," +
+            "Gia,GiaGiam,HinhAnh,MauSac,NhaSanXuat,XuatXu,BaoHanh,NgayTao,HienThi,SanPhamBanChay,SoLuong," +
+            "KichThuocThung,KhoiLuongThung,KichThuocMH,DoPhanGiai,MoTa,ManHinhCong,BoXuLy,SmartTV,TanSoQuet," +
+            "CongSuatLoa,CongWiFi,CongInternet,CongHDMI,CongUSB,ChiaSeThongMinh,HeDeHanh,TrinhDuyetWeb,LoaiDanMay,LoaiDauDia")] SanPham sanPham, IFormFile Hinh_Anh)
         {
             if (id != sanPham.ID)
             {
                 return NotFound();
             }
-
+           
             if (ModelState.IsValid)
             {
+                if (sanPham.HinhAnh.Equals("changed"))
+                {
+                    long size = 0;
+                    string tenHinh = "";
+                    var filename = ContentDispositionHeaderValue
+                                    .Parse(Hinh_Anh.ContentDisposition)
+                                    .FileName
+                                    .Trim('"');
+                    tenHinh = $@"images\sanpham\" + filename;
+                    filename = hostingEnv.WebRootPath + $@"\images\sanpham\{filename}";
+                    size += Hinh_Anh.Length;
+                    using (FileStream fs = System.IO.File.Create(filename))
+                    {
+                        Hinh_Anh.CopyTo(fs);
+                        fs.Flush();
+                    }
+                    sanPham.HinhAnh = tenHinh;
+                }
+                
+                
                 try
                 {
                     _context.Update(sanPham);
@@ -253,6 +349,12 @@ namespace ElectricShop.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            var dsLoaiSanPham = from lsp in _context.LoaiSanPham
+                                select lsp;
+            var dsNhaSanXuat = from nsx in _context.NhaSanXuat
+                               select nsx;
+            ViewBag.DSLoaiSanPham = dsLoaiSanPham.ToList();
+            ViewBag.DSNhaSanXuat = dsNhaSanXuat.ToList();
             return View(sanPham);
         }
 
@@ -263,15 +365,10 @@ namespace ElectricShop.Controllers
             {
                 return NotFound();
             }
-
-            var sanPham = await _context.SanPham
-                .SingleOrDefaultAsync(m => m.ID == id);
-            if (sanPham == null)
-            {
-                return NotFound();
-            }
-
-            return View(sanPham);
+            var sanPham = await _context.SanPham.SingleOrDefaultAsync(m => m.ID == id);
+            _context.SanPham.Remove(sanPham);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         // POST: SanPham/Delete/5

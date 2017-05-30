@@ -23,5 +23,9 @@ namespace ElectricShop.Models
         public DbSet<ElectricShop.Models.KhuyenMai> KhuyenMai { get; set; }
 
         public DbSet<ElectricShop.Models.BinhLuan> BinhLuan { get; set; }
+
+        public DbSet<ElectricShop.Models.DonHang> DonHang { get; set; }
+
+        public DbSet<ElectricShop.Models.ChiDietDonHang> ChiDietDonHang { get; set; }
     }
 }

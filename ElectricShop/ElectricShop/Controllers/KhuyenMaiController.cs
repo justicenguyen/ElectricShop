@@ -53,7 +53,7 @@ namespace ElectricShop.Controllers
             var dsloaisanpham = from lsp in _context.LoaiSanPham
                                 select lsp;
             var dsidloaisanphamkhuyenmai = from sp in _context.SanPham
-                                         where sp.GiaGiam != sp.Gia
+                                           where sp.GiaGiam != sp.Gia
                                          group sp by sp.LoaiSanPham;
             var dsloaisanphamkhuyenmai = from lsp in _context.LoaiSanPham
                                          join k in dsidloaisanphamkhuyenmai on lsp.ID equals k.Key
@@ -129,7 +129,7 @@ namespace ElectricShop.Controllers
         {
            
             var dssanpham = (from sp in _context.SanPham
-                            where sp.Gia != sp.GiaGiam && sp.LoaiSanPham == loaisp
+                             where sp.Gia != sp.GiaGiam && sp.LoaiSanPham == loaisp
                             select sp).Skip(3);
             string result = "";
             foreach(var sp in dssanpham)

@@ -26,7 +26,7 @@
                         }
                     </p>
                     
-                    <h4 style="text-align:center"><a class="btn" asp-controller="SanPham" asp-action="ChiTiet" asp-route-id="@spht.TenSPKhongDau"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> </h4>
+                    <h4 style="text-align:center"><a class="btn" asp-controller="San_Pham" asp-action="ChiTiet" asp-route-id="@spht.TenSPKhongDau"> <i class="icon-zoom-in"></i></a> <a class="btn"  onclick="themSP(@spht.ID);">Add to <i class="icon-shopping-cart"></i></a> </h4>
                 </div>
             </div>
         </li>
@@ -59,7 +59,7 @@
                     }
                     <li class="span4">
                         <div class="thumbnail">
-                            <a asp-controller="SanPham" asp-action="ChiTiet" asp-route-id="@Model.dssanphambanchay[i].TenSPKhongDau"><img src="~/@Model.dssanphambanchay[i].HinhAnh" alt=""></a>
+                            <a asp-controller="San_Pham" asp-action="ChiTiet" asp-route-id="@Model.dssanphambanchay[i].TenSPKhongDau"><img src="~/@Model.dssanphambanchay[i].HinhAnh" alt=""></a>
                             <div class="caption">
                                 <h6 style="text-align:center; color:blue;">@Model.dssanphambanchay[i].TenSPCoDau</h6>
                                 <a class="btn" asp-controller="SanPham" asp-action="ChiTiet" asp-route-id="@Model.dssanphambanchay[i].TenSPKhongDau">Xem</a> <span class="pull-right"><span style="font-size:18px;color:red;font-weight:bold;"> @Model.dssanphambanchay[i].GiaGiam</span>&emsp;<span style="text-decoration:line-through;"><b>@Model.dssanphambanchay[i].Gia</b></span>&nbsp;<span style="background-color:red;color:white;">-@(100 - Model.dssanphambanchay[i].GiaGiam * 100 / Model.dssanphambanchay[i].Gia)%</span></span>
@@ -79,6 +79,25 @@
     </div>
 </div>
 </div>
+
+<script>
+
+    function themSP(id) {
+        $(document).ready(function () {
+            $.ajax({
+                url: '/GioHang/ThemGioHang',
+                type: 'GET',
+                data: { "idSP": id, "soLuong": 1 },
+                success: function (c) {
+                    alert(c);
+                }
+
+            });
+        });
+    }
+</script>
+
+
 
 
 

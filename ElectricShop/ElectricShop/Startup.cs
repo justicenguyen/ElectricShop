@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using ElectricShop.Models;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Http;
+
 
 namespace ElectricShop
 {
@@ -31,7 +34,10 @@ namespace ElectricShop
         {
             // Add framework services.
             services.AddMvc();
-
+            services.AddCookieTempData();
+           // services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddDbContext<ElectricShopContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ElectricShopContext")));
         }
@@ -41,7 +47,8 @@ namespace ElectricShop
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+           // app.UseCookieAuthentication();
+            app.UseSession();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -51,14 +58,13 @@ namespace ElectricShop
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseStaticFiles();
-
+            //app.UseMvc();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=TrangChu}/{action=TrangChu}/{id?}");
+                    template: "{controller=DonHang}/{action=Index}/{id?}");
             });
         }
     }
