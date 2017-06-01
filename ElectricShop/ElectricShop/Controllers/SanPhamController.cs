@@ -162,7 +162,7 @@ namespace ElectricShop.Controllers
         }
 
         // GET: SanPham
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             return View(await _context.SanPham.ToListAsync());
         }

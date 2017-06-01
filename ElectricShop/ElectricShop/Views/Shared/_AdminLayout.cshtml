@@ -54,10 +54,17 @@
                         <div class="menu_section">
                             <h3>Cửa hàng</h3>
                             <ul class="nav side-menu">
+                                
                                 <li><a asp-controller="LoaiSanPham" asp-action="Index"><i class="fa fa-plus-square-o"></i> Quản lý loại sản phẩm</a></li>
-
                                 <li><a asp-controller="SanPham" asp-action="Index"><i class="fa fa-laptop"></i> Quản lý sản phẩm</a></li>
                                 <li><a asp-controller="NhaSanXuat" asp-action="Index"><i class="fa fa-home"></i> Quản lý nhà sản xuất</a></li>
+                                <li>
+                                    <a><i class="fa fa-gift"></i> Quản lý bán hàng<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="index.html">Bán hàng</a></li>
+                                        <li><a href="index2.html">Sản phẩm đã bán</a></li>
+                                    </ul>
+                                </li>
                                 <li>
                                     <a><i class="fa fa-gift"></i> Quản lý khuyến mãi<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">

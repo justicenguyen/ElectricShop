@@ -87,6 +87,22 @@ namespace ElectricShop.Migrations
                     b.ToTable("DonHang");
                 });
 
+            modelBuilder.Entity("ElectricShop.Models.KhachHang", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DiaChi");
+
+                    b.Property<string>("HoTenKhachHang");
+
+                    b.Property<string>("SoDienThoai");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("KhachHang");
+                });
+
             modelBuilder.Entity("ElectricShop.Models.KhuyenMai", b =>
                 {
                     b.Property<int>("ID")
@@ -217,6 +233,25 @@ namespace ElectricShop.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("SanPham");
+                });
+
+            modelBuilder.Entity("ElectricShop.Models.SanPhamBan", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("khachHangID");
+
+                    b.Property<string>("maBaoHanh")
+                        .IsRequired();
+
+                    b.Property<DateTime>("ngayBan");
+
+                    b.Property<int>("sanPhamID");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("SanPhamBan");
                 });
         }
     }

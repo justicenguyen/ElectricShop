@@ -64,7 +64,7 @@ namespace ElectricShop
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=DonHang}/{action=Index}/{id?}");
+                    template: "{controller=TrangChu}/{action=TrangChu}/{id?}");
             });
         }
     }
