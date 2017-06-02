@@ -91,7 +91,7 @@ namespace ElectricShop.Controllers
             "</div>"+
             "<div class='col-sm-7'>"+
                 "<p id='tensp'><b>"+sanPham.TenSPCoDau+"</b></p>"+
-                "<p>Giá gốc :"+sanPham.Gia+"</p>"+
+                "<p>Giá gốc :"+sanPham.GiaGoc+"</p>"+
                 "<p>Giá giảm :" + sanPham.GiaGiam + "</p>" +
             "</div>" +
             "<input type='hidden' id ='masp' value='" + sanPham.ID + "' />";
@@ -113,7 +113,7 @@ namespace ElectricShop.Controllers
             "</div>" +
             "<div class='col-sm-7'>" +
                 "<p id='tensp'><b>" + sanPham.TenSPCoDau + "</b></p>" +
-                "<p>Giá gốc :" + sanPham.Gia + "</p>" +
+                "<p>Giá gốc :" + sanPham.GiaGoc + "</p>" +
                 "<p>Giá giảm :" + sanPham.GiaGiam + "</p>" +
             "</div>"+
             "<input type='hidden' id ='masp' value='"+sanPham.ID+"' />";

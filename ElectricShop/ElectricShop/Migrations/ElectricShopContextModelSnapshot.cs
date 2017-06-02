@@ -92,11 +92,14 @@ namespace ElectricShop.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DiaChi");
+                    b.Property<string>("DiaChi")
+                        .IsRequired();
 
-                    b.Property<string>("HoTenKhachHang");
+                    b.Property<string>("HoTenKhachHang")
+                        .IsRequired();
 
-                    b.Property<string>("SoDienThoai");
+                    b.Property<string>("SoDienThoai")
+                        .IsRequired();
 
                     b.HasKey("ID");
 
@@ -178,10 +181,11 @@ namespace ElectricShop.Migrations
 
                     b.Property<string>("DoPhanGiai");
 
-                    b.Property<int?>("Gia")
-                        .IsRequired();
+                    b.Property<int>("GiaBan");
 
                     b.Property<int>("GiaGiam");
+
+                    b.Property<int>("GiaGoc");
 
                     b.Property<string>("HeDeHanh");
 
